@@ -10,6 +10,7 @@ import store from './redux/store';
 import Map from './pages/MapPage';
 import Sites from './pages/Sites';
 import AboutUs from './pages/AboutUs';
+import Faqs from './pages/Faqs';
 
 const App: React.FC = () => {
   return (
@@ -18,12 +19,14 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/aboutus" element={<AboutUs/>} />
+          <Route path="/products" element={<Sites/>} />
+          <Route path="/faqs" element={<Faqs/>} />
+          <Route path="/Contact" element={<AboutUs/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/map" element={<Map/>} />
           
           {/* Unprotected /login/otp route */}
           <Route path="/login/otp" element={<Otp />} />
-
           {/* Unprotected /users route */}
           <Route path="/users" element={<Users />} />
           <Route path="/sites" element={<Sites/>} />

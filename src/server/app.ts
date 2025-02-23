@@ -31,7 +31,8 @@ export const fetchAllUsers = async () => {
 };
 
 // Login - check if email exists
-export const checkEmail = async (userData: { email: string }) => {
+export const checkUser = async (userData: { email: string, password: string }) => {
+  // update the user details - useAtom
   try {
     const response = await api.post('/users/check-email', userData);
     localStorage.setItem('user', response.data.data);
@@ -152,7 +153,9 @@ export const uploadImage = async (siteData: object) => {
     throw error;
   }
 };
-export const updateSite = async (id: string, updatedData: {
+
+
+export const updateSite = async (id: string | null, updatedData: {
   name?: string;
   address?: string;
   coordinates?: any;

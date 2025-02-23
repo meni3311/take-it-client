@@ -1,104 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { useNavigate } from 'react-router-dom';
-import Side from '../components/Side';
+import { Container, Typography, Box, Card, CardMedia, CardContent, Grid } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const AboutUs: React.FC = () => {
-  const [isAsideOpen, setAsideOpen] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
 
-  const toggleAside = () => {
-    setAsideOpen(!isAsideOpen);
-  };
-
-  const handleLogOut = () => {
-    navigate("/login");
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setAsideOpen(window.innerWidth >= 768);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#6a0dad',
+      },
+      secondary: {
+        main: '#d8b6ff',
+      },
+    },
+  });
 
   return (
-    <div className={`flex flex-col min-h-screen transition-transform duration-300 ${isAsideOpen ? 'mr-[150px]' : 'mr-0'}`}>
-      <Header toggleAside={toggleAside} color="bg-gray-700" />
+    <div className={`flex flex-col min-h-screen transition-transform duration-300 $`}>
+      <Header />
 
-      <main className="flex-grow bg-gray-100 p-4 container mx-auto max-w-4xl">
-        <section className="bg-white p-8 rounded-lg shadow-lg mb-6">
-          <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Team Contributions</h2>
+      <main className="flex-grow p-4 container mx-auto max-w-4xl">
+        <ThemeProvider theme={theme}>
+          <Container>
+            <Box textAlign="center" my={5}>
+              <Typography variant="h3" color="primary" gutterBottom>
+                About Us
+              </Typography>
+            </Box>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold mb-2">Israel Edri</h3>
-              <p className="text-gray-700">Backend development focused on optimizing performance and adding new map functionalities to enhance the user experience.</p>
-            </div>
+            <Box textAlign="center">
+              <img src='about.png' alt="About Us" width="100%" />
+            </Box>
 
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold mb-2">Shmuel Barda</h3>
-              <p className="text-gray-700">Established a stable server-side infrastructure, developed various backend functionalities, and integrated external connections with Google services.</p>
-            </div>
+            <Typography variant="h6" color="textSecondary" textAlign="center" mt={3}>
+              We are a group of innovative, experienced, and proficient teams. You will love to collaborate with us.
+            </Typography>
 
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold mb-2">Yehuda Vaghel</h3>
-              <p className="text-gray-700">Designed and developed the client-side infrastructure, focusing on implementing JWT security measures on both client and server sides, along with Google Maps integration.</p>
-            </div>
+            <Box textAlign="center" my={5}>
+              <Typography variant="h3" color="primary" gutterBottom>
+                Our Team
+              </Typography>
+            </Box>
 
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold mb-2">Israel Pinto</h3>
-              <p className="text-gray-700">Managed and designed databases in MongoDB, including data export to Excel, and implemented secure OTP login options to improve user security and convenience.</p>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold mb-2">Yosef Pinchasov</h3>
-              <p className="text-gray-700">Developed an intuitive client-side user interface and user experience, including input validation and integration with Google Maps API.</p>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold mb-2">Gad Tzarfati</h3>
-              <p className="text-gray-700">Managed OTP solutions on the server side, developed user interfaces for authentication processes, and enabled data export to Excel.</p>
-            </div>
-          </div>
-        </section>
+            <Grid container spacing={4} justifyContent="center">
+              {[
+                { name: 'Flora Nyra', role: 'Product Manager', img: 'about-pic-1.jpg' },
+                { name: 'Evander Mac', role: 'Art Director', img: 'about-pic-2.jpg' },
+                { name: 'Taytum Elia', role: 'Investment Planner', img: 'about-pic-4.jpg' },
+                { name: 'Wylder Elio', role: 'Financial Analyst', img: 'about-pic-3.jpg' },
+              ].map((member, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Card>
+                    <CardMedia component="img" height="250" image={member.img} alt={member.name} />
+                    <CardContent>
+                      <Typography variant="h6" color="primary">
+                        {member.name}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {member.role}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </ThemeProvider>
       </main>
 
       <Footer />
-      <Side isOpen={isAsideOpen} showLogoutModal={() => setShowModal(true)} />
-
-      {showModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50">
-          <div className="bg-white p-8 rounded shadow-lg w-full max-w-md text-center">
-            <h2 className="text-2xl font-semibold mb-4">Confirm Logout</h2>
-            <p className="text-gray-700 mb-6">
-              Are you sure you want to Logout?
-            </p>
-
-            <div className="flex justify-between mt-4">
-              <button
-                type="button"
-                className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition-colors duration-300"
-                onClick={handleLogOut}
-              >
-                Confirm Logout
-              </button>
-              <button
-                type="button"
-                className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition-colors duration-300"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

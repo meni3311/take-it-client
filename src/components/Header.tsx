@@ -1,39 +1,131 @@
-import React, { useEffect, useState } from 'react';
-import { LuMenu } from 'react-icons/lu';
+import { useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Box,
+  Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { purple } from '@mui/material/colors';
+import { useAtom } from 'jotai';
+import { userAtom } from '../redux/atoms';
 
-interface HeaderProps {
-  toggleAside: () => void;
-  color?: string;  // Optional color prop for customization
-}
+const Header = () => {
+  const [user] = useAtom(userAtom);
+  const [showModal, setShowModal] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
 
-const Header: React.FC<HeaderProps> = ({ toggleAside, color = 'bg-gray-800' }) => {
-  const [userName, setUserName] = useState<string>(() => {
-    return localStorage.getItem("user") || "";
-  });
-
-  useEffect(() => {
-    const storedUserName = localStorage.getItem("user");
-    if (storedUserName) {
-      setUserName(storedUserName);
-    }
-  }, []);
-
-  // קובע את צבע הטקסט בהתאם לצבע העדר
-  const textColor = color !== 'bg-white' ? 'text-white' : 'text-black';
+  const handleLogOut = () => {
+    setShowModal(false);
+    navigate('/login');
+  };
 
   return (
-    <header className={`${color} flex justify-between items-center h-16 relative`}>
-      <img className='w-auto h-full object-contain' src="../../icon1.png" alt="icon for page" />
-      <div className={`${textColor} text-lg text-center md:text-xl font-semibold tracking-wide`}>
-        {`Welcome, ${userName}!`}
-      </div>
-      <div
-        className="flex items-center justify-center w-12 h-8 mr-4 border-2 border-gray-400 rounded-lg hover:bg-slate-300 m-2 cursor-pointer"
-        onClick={toggleAside}
-      >
-        <LuMenu className="w-12 h-6 text-gray-600" />
-      </div>
-    </header>
+    <AppBar
+      position="static"
+      sx={{
+        background: `linear-gradient(45deg, ${purple[700]}, ${purple[500]})`,
+        borderRadius: '8px',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+        padding: '8px',
+      }}
+    >
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Sidebar Toggle Button */}
+        <IconButton edge="start" color="inherit" onClick={() => setDrawerOpen(true)}>
+          <MenuIcon />
+        </IconButton>
+
+        {/* Animated Logo */}
+        <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
+          <Typography
+            variant="h6"
+            component={Link}
+            to="/"
+            sx={{
+              color: 'white',
+              textDecoration: 'none',
+              fontWeight: 'bold',
+              fontSize: '1.5rem',
+            }}
+          >
+            LickIt
+          </Typography>
+        </motion.div>
+
+        {/* Navigation Links */}
+        <Box sx={{ display: 'flex', gap: 3 }}>
+          {['AboutUs', 'Products', 'FAQs', 'Contact'].map((text) => (
+            <motion.div key={text} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              <Typography
+                component={Link}
+                to={`/${text.toLowerCase()}`}
+                sx={{
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontWeight: '500',
+                  transition: '0.3s',
+                  '&:hover': { color: '#90CAF9' },
+                }}
+              >
+                {text}
+              </Typography>
+            </motion.div>
+          ))}
+        </Box>
+
+        {/* Logout Button */}
+        <IconButton color="inherit" onClick={() => setShowModal(true)}>
+          <LogoutIcon />
+        </IconButton>
+      </Toolbar>
+
+      {/* Drawer Menu */}
+      <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <Box sx={{ width: 250 }} role="presentation" onClick={() => setDrawerOpen(false)}>
+          <List>
+            {['Users', 'Map'].map((text) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton component={Link} to={`/${text.toLowerCase()}`}>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+
+      {/* Logout Dialog */}
+      <Dialog open={showModal} onClose={() => setShowModal(false)}>
+        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to logout?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="error" onClick={handleLogOut}>
+            Confirm Logout
+          </Button>
+          <Button variant="contained" color="secondary" onClick={() => setShowModal(false)}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </AppBar>
   );
 };
 

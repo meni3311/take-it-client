@@ -4,11 +4,12 @@ import PopUpCardCreateSite from './PopUpCardCreateSite';
 interface PopupProps {
   onClose: () => void;
   position: { x: number; y: number };
+  coordinates: {lat: number, lng: number};
   loadSite: boolean;
   setLoadSite: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateSitePopup: React.FC<PopupProps> = ({ onClose, position, setLoadSite, loadSite}) => {
+const CreateSitePopup: React.FC<PopupProps> = ({ onClose, position, coordinates, setLoadSite, loadSite}) => {
   const [showCartPopup, setShowCartPopup] = useState(false);
 
 
@@ -40,8 +41,8 @@ const CreateSitePopup: React.FC<PopupProps> = ({ onClose, position, setLoadSite,
           onClose={() => setShowCartPopup(false)}
           loadSite={loadSite}
           setLoadSite={setLoadSite}
-          x={position.x}
-          y={position.y}
+          x={coordinates.lat}
+          y={coordinates.lng}
         />}
     </div>
   );

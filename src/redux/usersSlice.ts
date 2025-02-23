@@ -30,6 +30,7 @@ export interface Site {
     coordinates: [number, number];
     status: string;
     creationDate: Date;
+    pictures: string[];
   }
 
 export interface SiteState {

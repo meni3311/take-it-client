@@ -12,7 +12,7 @@ const Logout: React.FC<LogoutProps> = ({ showModal, setShowModal }) => {
     <div>
       <button 
         className='text-gray-500 transition-transform duration-200 transform hover:text-gray-800 hover:scale-150 focus:scale-150 focus:outline-none'
-        onClick={() => {setShowModal(true); console.log('meh')}} 
+        onClick={() => {setShowModal(true);}} 
       >
         <TbLogout />
       </button>

@@ -6,21 +6,17 @@ interface PopUpCardCreateSiteProps {
   onClose: () => void;
   loadSite: boolean;
   setLoadSite: React.Dispatch<React.SetStateAction<boolean>>;
-  x: number;
-  y: number;
 }
 
 const PopUpCardCreateSite: React.FC<PopUpCardCreateSiteProps> = ({
   onClose,
   setLoadSite,
   loadSite,
-  x,
-  y,
 }) => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
-  const [latitudeCoordinate, setLatitudeCoordinate] = useState<number>(x);
-  const [longitudeCoordinate, setLongitudeCoordinate] = useState<number>(y);
+  const [latitudeCoordinate, setLatitudeCoordinate] = useState<number>();
+  const [longitudeCoordinate, setLongitudeCoordinate] = useState<number>();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const popUpRef = useRef<HTMLDivElement>(null);

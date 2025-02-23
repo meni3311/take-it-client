@@ -36,8 +36,11 @@ interface Site {
   address: string;
   coordinates: [number, number];
 }
+interface MapProps {
+  onMapRightClick?: (coords: { lat: number; lng: number }, pixelPosition: { x: number; y: number }) => void;
+}
 
-const Map: React.FC = () => {
+const Map: React.FC<MapProps> = ({ onMapRightClick }) => {
   const mapRef = useRef<google.maps.Map | null>(null);
   const [mapCenter, setMapCenter] = useState(center);
   const [sites, setSites] = useState<Site[]>([]);
@@ -113,7 +116,18 @@ const Map: React.FC = () => {
             zoomControl: false,
             mapTypeControl: false,
           }}
-          onLoad={(map) => { mapRef.current = map }}
+           onLoad={(map) => { mapRef.current = map }}
+          onRightClick={(e) => {
+            if (onMapRightClick && e.latLng) {
+              const lat = e.latLng.lat();
+              const lng = e.latLng.lng();
+              const domEvent = e.domEvent;
+              onMapRightClick(
+                { lat, lng },
+                { x: domEvent.clientX, y: domEvent.clientY }
+              );
+            }
+          }}
         >
           {sites.map(site => (
             <Marker
