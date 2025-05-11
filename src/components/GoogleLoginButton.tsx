@@ -79,7 +79,7 @@ const GoogleLoginButton = () => {
                         phoneNumber: data.user.phoneNumber,
                         role: data.user.role
                     })
-                    navigate('/users');
+                    navigate('/products');
                 }
             } catch (err) {
                 console.error('Error during token verification:', err);

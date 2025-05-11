@@ -5,13 +5,10 @@ interface PopupProps {
   onClose: () => void;
   position: { x: number; y: number };
   coordinates: {lat: number, lng: number};
-  loadSite: boolean;
-  setLoadSite: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateSitePopup: React.FC<PopupProps> = ({ onClose, position, coordinates, setLoadSite, loadSite}) => {
+const CreateSitePopup: React.FC<PopupProps> = ({ onClose, position, coordinates }) => {
   const [showCartPopup, setShowCartPopup] = useState(false);
-
 
   return (
     <div
@@ -39,10 +36,8 @@ const CreateSitePopup: React.FC<PopupProps> = ({ onClose, position, coordinates,
       {showCartPopup &&
         <PopUpCardCreateSite
           onClose={() => setShowCartPopup(false)}
-          loadSite={loadSite}
-          setLoadSite={setLoadSite}
-          x={coordinates.lat}
-          y={coordinates.lng}
+          Xaxis={coordinates.lat}
+          Yaxis={coordinates.lng}
         />}
     </div>
   );

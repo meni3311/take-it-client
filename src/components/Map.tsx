@@ -49,7 +49,7 @@ const Map: React.FC<MapProps> = ({ onMapRightClick }) => {
   useEffect(() => {
     const fetchSites = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/site/getAllSites');
+        const response = await axios.get('http://localhost:3000/api/product/getAllProducts');
         if (response.data.isSuccessful) {
           setSites(response.data.data);
         }
@@ -87,17 +87,17 @@ const Map: React.FC<MapProps> = ({ onMapRightClick }) => {
     >
       <div className="relative h-full w-full flex flex-col items-center justify-start">
         <div className="absolute top-[30px] right-5 w-80 z-10">
-        <SearchPlace
-  onPlaceSelected={(place) => {
-    if (place.geometry?.location) {
-      setMapCenter({
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-      });
-      mapRef.current?.setZoom(15);  // Closer zoom level for better visibility
-    }
-  }}
-/>
+          <SearchPlace
+            onPlaceSelected={(place) => {
+              if (place.geometry?.location) {
+                setMapCenter({
+                  lat: place.geometry.location.lat(),
+                  lng: place.geometry.location.lng(),
+                });
+                mapRef.current?.setZoom(15);  // Closer zoom level for better visibility
+              }
+            }}
+          />
         </div>
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -116,7 +116,7 @@ const Map: React.FC<MapProps> = ({ onMapRightClick }) => {
             zoomControl: false,
             mapTypeControl: false,
           }}
-           onLoad={(map) => { mapRef.current = map }}
+          onLoad={(map) => { mapRef.current = map }}
           onRightClick={(e) => {
             if (onMapRightClick && e.latLng) {
               const lat = e.latLng.lat();

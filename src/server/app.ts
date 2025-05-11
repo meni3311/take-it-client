@@ -1,4 +1,5 @@
 // Import the centralized Axios instance
+import axios from 'axios';
 import api from '../utilities/axiosInstance';
 
 // Adding new user
@@ -127,7 +128,7 @@ export const checkToken = async (token: string) => {
 
 export const fetchAllSites = async () => {
   try {
-    const response = await api.get('/site/getAllSites');
+    const response = await api.get('/product/getAllProducts');
     return response.data.data;
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -137,16 +138,20 @@ export const fetchAllSites = async () => {
 
 export const createSite = async (siteData: object) => {
   try {
-    const response = await api.post('/site/createSite', siteData);
+    const response = await api.post('/product/createProduct', siteData);
     return response.data;
   } catch (error) {
     console.error('Error verifying token:', error);
     throw error;
   }
 };
-export const uploadImage = async (siteData: object) => {
+export const uploadImage = async (formData:object) => {
   try {
-    const response = await api.post('/site/upload-image', siteData);
+    const response = await axios.post('http://localhost:3000/api/product/upload-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error upload-image:', error);
@@ -163,38 +168,32 @@ export const updateSite = async (id: string | null, updatedData: {
   lastUpdated?: Date;
 }) => {
   try {
-    const response = await api.patch(`/site/updateSide/${id}`, updatedData);
+    const response = await api.patch(`/product/updateProduct/${id}`, updatedData);
     console.log(id);
     return response.data;
   } catch (error) {
-    console.error('Error updating site:', error); 
+    console.error('Error updating product:', error); 
     throw error;
   }
 };
 
-export const getSiteById =async (id: any, updatedData: {
-  name?: string;
-  address?: string;
-  coordinates?: any;
-  creationDate?: Date;
-  lastUpdated?: Date;
-}) => {
+export const getSiteById =async (id: any) => {
   try {
-    const response = await api.patch(`createSite/updateSide/${id}`, updatedData);
+    const response = await api.get(`site/getProduct/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Error updating user:', error);
+    console.error('Error get product by id:', error);
     throw error;
   }
 };
 
-//Searching sites
+//Searching products
 export const searchSite = async (searchCriteria: any) => {
   try {
-    const response = await api.post('/site/searchSites', searchCriteria);
+    const response = await api.post('/product/searchProducts', searchCriteria);
     return response.data;
   } catch (error) {
-    console.error('Error searching site:', error);
+    console.error('Error searching product:', error);
     throw error;
   }
 }

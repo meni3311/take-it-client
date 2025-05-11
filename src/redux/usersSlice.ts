@@ -30,7 +30,7 @@ export interface Site {
     coordinates: [number, number];
     status: string;
     creationDate: Date;
-    pictures: string[];
+    images: string[];
   }
 
 export interface SiteState {
@@ -79,7 +79,7 @@ export const deleteUser = createAsyncThunk<void, string>(
 export const fetchSites = createAsyncThunk<Site[], void>(
     'sites/fetchSites',
     async () => {
-        const response = await api.get('/site/getAllSites');
+        const response = await api.get('/product/getAllProducts');
         return response.data.data;
     }
 );
@@ -87,7 +87,7 @@ export const fetchSites = createAsyncThunk<Site[], void>(
 export const searchSite = createAsyncThunk<Site[], { searchTerm: string }>(
     'sites/searchSite',
     async (searchCriteria) => {
-        const response = await api.post('/site/searchSites', searchCriteria);
+        const response = await api.post('/product/searchProducts', searchCriteria);
         return response.data.data; // החזרת הנתונים
     }
 );
@@ -181,7 +181,7 @@ const siteSlice = createSlice({
             })
             .addCase(searchSite.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message || 'Failed to search sites';
+                state.error = action.error.message || 'Failed to Search products';
             });
     },
 });

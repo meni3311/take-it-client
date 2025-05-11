@@ -39,7 +39,6 @@ const MapPage: React.FC = () => {
         />
       )}
 
-      {/* Logout Modal - Keep existing implementation */}
     </div>
   );
 };

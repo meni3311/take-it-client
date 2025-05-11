@@ -82,7 +82,7 @@ const Login: React.FC = () => {
             <Container maxWidth="sm">
                 <Box sx={{ bgcolor: 'white', p: 4, borderRadius: 3, boxShadow: 3, width: '100%', textAlign: 'center', opacity: 0.9 }}>
                     <Typography variant="h3" fontWeight="bold" color={purple[700]} gutterBottom>
-                        LickIt
+                        takeIt
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField

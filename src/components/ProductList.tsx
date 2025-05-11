@@ -8,17 +8,17 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { updateSite } from '../server/app';
-import ProductCard from './product-Components/productCard';
-import DeleteDialog from './product-Components/deleteDialog';
-import UpdateDialog from './product-Components/updateDialog';
+import ProductCard from './product-Components/ProductCard';
+import DeleteDialog from './product-Components/DeleteDialog';
+import UpdateDialog from './product-Components/UpdateDialog';
 
 interface TableSideProps {
-  loadSite: boolean;
-  setLoadSite: React.Dispatch<React.SetStateAction<boolean>>;
+  product: boolean;
+  setProduct: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // ================= TableSide (Parent) Component =================
-const TableSide: React.FC<TableSideProps> = ({ loadSite, setLoadSite }) => {
+const TableSide: React.FC<TableSideProps> = ({ product, setProduct }) => {
   // State for modals and selected site ID
   const [showPopUpUpdate, setShowPopUpUpdate] = useState<boolean>(false);
   const [showDeleteDialog, setDeleteDialog] = useState<boolean>(false);
@@ -44,28 +44,28 @@ const TableSide: React.FC<TableSideProps> = ({ loadSite, setLoadSite }) => {
   const loading = useSelector((state: RootState) => state.sites.loading);
   const error = useSelector((state: RootState) => state.sites.error);
 
-  // Fetch sites on mount or when loadSite changes
+  // Fetch sites on mount or when product changes
   useEffect(() => {
     dispatch(fetchSites()).then((result) => {
       console.log('Fetched Sites:', result);
     });
-  }, [dispatch, loadSite]);
+  }, [dispatch, product]);
 
   // ---------------- Delete Handler ----------------
   const handleDeleteProduct = async (siteId: string) => {
     setLoadingDelete(true);
     try {
-      await axios.delete(`http://localhost:3000/api/site/deleteSite/${siteId}`, {
+      await axios.delete(`http://localhost:3000/api/product/deleteProduct/${siteId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       setDeleteDialog(false);
       setSelectedSiteId(null);
-      setLoadSite(!loadSite);
+      setProduct(!product);
     } catch (err) {
-      setErrorDelete('Failed to delete the site');
-      console.error('Error deleting site:', err);
+      setErrorDelete('Failed to delete the Product');
+      console.error('Error deleting Product:', err);
     } finally {
       setLoadingDelete(false);
     }
@@ -108,7 +108,7 @@ const TableSide: React.FC<TableSideProps> = ({ loadSite, setLoadSite }) => {
     } catch (error) {
       console.error('Error updating site:', error);
     } finally {
-      setLoadSite(!loadSite);
+      setProduct(!product);
     }
   };
 
@@ -123,13 +123,13 @@ const TableSide: React.FC<TableSideProps> = ({ loadSite, setLoadSite }) => {
     };
 
     try {
-      await axios.put(`http://localhost:3000/api/site/updateSite/${selectedSiteId}`, updatedSiteData, {
+      await axios.put(`http://localhost:3000/api/product/updateProduct/${selectedSiteId}`, updatedSiteData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       setShowPopUpUpdate(false);
-      setLoadSite(!loadSite);
+      setProduct(!product);
     } catch (error) {
       console.error('Error updating site:', error);
     }

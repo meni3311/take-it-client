@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="text-sm flex gap-2 items-center"
           >
-            MTF Security © 2024
+            TAKEIT Cycke © 2025
           </motion.h3>
         </div>
       </motion.footer>

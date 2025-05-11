@@ -4,19 +4,15 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, G
 
 interface PopUpCardCreateSiteProps {
   onClose: () => void;
-  loadSite: boolean;
-  setLoadSite: React.Dispatch<React.SetStateAction<boolean>>;
+  Xaxis?: number;
+  Yaxis?: number;
 }
 
-const PopUpCardCreateSite: React.FC<PopUpCardCreateSiteProps> = ({
-  onClose,
-  setLoadSite,
-  loadSite,
-}) => {
+const PopUpCardCreateSite: React.FC<PopUpCardCreateSiteProps> = ({ onClose, Xaxis, Yaxis }) => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
-  const [latitudeCoordinate, setLatitudeCoordinate] = useState<number>();
-  const [longitudeCoordinate, setLongitudeCoordinate] = useState<number>();
+  const [latitudeCoordinate, setLatitudeCoordinate] = useState<number>(Xaxis || 0);
+  const [longitudeCoordinate, setLongitudeCoordinate] = useState<number>(Yaxis || 0);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const popUpRef = useRef<HTMLDivElement>(null);
@@ -56,41 +52,39 @@ const PopUpCardCreateSite: React.FC<PopUpCardCreateSiteProps> = ({
     ));
   };
 
-// Update your handleSubmit function
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!name || !address || !latitudeCoordinate || !longitudeCoordinate) return;
+  // Update your handleSubmit function
+  const handleSubmit = async (e: React.FormEvent) => {
+    if (!name || !address || !latitudeCoordinate || !longitudeCoordinate) return;
 
-  try {
-    // Upload images first
-    const imageUrls = await Promise.all(
-      selectedImages.map(async (image) => {
-        const formData = new FormData();
-        formData.append('image', image);
-        
-        const response = await uploadImage(formData);
-        return response.data.imageUrl;
-      })
-    );
+    try {
+      // Upload images first
+      const imageUrls = await Promise.all(
+        selectedImages.map(async (image) => {
+          const formData = new FormData();
+          formData.append('image', image);
 
-    // Create site with image URLs
-    const siteData = {
-      name,
-      address,
-      coordinates: [longitudeCoordinate, latitudeCoordinate],
-      images: imageUrls,
-      creationDate: new Date(),
-      lastUpdated: null,
-    };
-    
-    await createSite(siteData);
-    setLoadSite(!loadSite);
-    onClose();
-  } catch (error) {
-    console.error('Error creating site:', error);
-    alert('Error uploading images. Please try again.');
-  }
-};
+          const response = await uploadImage(formData);
+          return response.data.imageUrl;
+        })
+      );
+
+      // Create site with image URLs
+      const siteData = {
+        name,
+        address,
+        coordinates: [longitudeCoordinate, latitudeCoordinate],
+        images: imageUrls,
+        creationDate: new Date(),
+        lastUpdated: null,
+      };
+
+      await createSite(siteData);
+      onClose();
+    } catch (error) {
+      console.error('Error creating site:', error);
+      alert('Error uploading images. Please try again.');
+    }
+  };
 
   return (
     <Dialog open={true} onClose={onClose} fullWidth maxWidth="sm">

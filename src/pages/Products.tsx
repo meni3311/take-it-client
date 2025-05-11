@@ -8,9 +8,9 @@ import { Add } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import ProductList from '../components/ProductList';
 
-const Websites: React.FC = () => {
+const Products: React.FC = () => {
     const [popUpCreateSite, setPopUpCreateSite] = useState(false);
-    const [loadSite, setLoadSite] = useState(false);
+    const [product, setProduct] = useState(false);
 
     return (
         <div className={`flex flex-col min-h-screen transition-all duration-300`}>
@@ -32,11 +32,14 @@ const Websites: React.FC = () => {
                             startIcon={<Add />}
                             onClick={() => setPopUpCreateSite(true)}
                         >
-                            Add Site
+                            Add Product
                         </Button>
                     </motion.div>
                     {popUpCreateSite && (
-                        <PopUpCardCreateSite onClose={() => setPopUpCreateSite(false)} setLoadSite={setLoadSite} loadSite={loadSite} />
+                        <PopUpCardCreateSite onClose={() => {
+                            setPopUpCreateSite(false)
+                            window.location.reload()
+                        }} />
                     )}
                     <div className="flex flex-col space-y-2 md:space-y-0 md:flex-row items-center md:ml-4 md:flex-wrap">
 
@@ -47,7 +50,7 @@ const Websites: React.FC = () => {
                 </div>
 
                 <div className="container mx-auto bg-white shadow-md rounded-lg p-6 max-w-full">
-                    <ProductList loadSite={loadSite} setLoadSite={setLoadSite} />
+                    <ProductList product={product} setProduct={setProduct} />
                 </div>
             </main>
             <Footer />
@@ -55,4 +58,4 @@ const Websites: React.FC = () => {
     );
 };
 
-export default Websites;
+export default Products;

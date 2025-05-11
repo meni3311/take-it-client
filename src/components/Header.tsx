@@ -56,7 +56,7 @@ const Header = () => {
           <Typography
             variant="h6"
             component={Link}
-            to="/"
+            to="/products"
             sx={{
               color: 'white',
               textDecoration: 'none',
@@ -64,7 +64,7 @@ const Header = () => {
               fontSize: '1.5rem',
             }}
           >
-            LickIt
+            takeIt
           </Typography>
         </motion.div>
 
